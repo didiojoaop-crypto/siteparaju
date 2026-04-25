@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Ju</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #ffd6e0, #fff5f8);
+  color: #333;
+  overflow-x: hidden;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #d6336c;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 16px;
+  background: #ff6b9a;
+  color: white;
+  font-size: 16px;
+}
+
+.card {
+  background: rgba(255,255,255,0.65);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 15px;
+  margin-top: 15px;
+  animation: fade 0.8s forwards;
+}
+
+@keyframes fade {
+  from {opacity:0; transform: translateY(20px);}
+  to {opacity:1; transform: translateY(0);}
+}
+
+.poema {
+  margin-bottom: 15px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.texto {
+  white-space: pre-wrap;
+  font-size: 14px;
+  line-height: 1.7;
+  opacity: 0.2;
+  transition: 0.3s;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.box {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 80%;
+}
+
+.assinatura {
+  position: fixed;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  opacity: 0.2;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="container">
+<h1>Ju</h1>
+
+<button onclick="abrirPoemas()">Poemas</button>
+<button onclick="abrirSenha()">Texto</button>
+
+<div class="card">
+<iframe src="https://open.spotify.com/embed/playlist/7FyAUCg26llvEJtsgAiEiZ" width="100%" height="120"></iframe>
+</div>
+
+<div id="poemas" class="card" style="display:none;"></div>
+
+<div id="textoBox" class="card" style="display:none;">
+<div id="texto" class="texto"></div>
+</div>
+</div>
+
+<div class="overlay" id="senhaBox">
+<div class="box">
+<p>Pede a senha pra ele 🙂</p>
+<input id="senhaInput">
+<br><br>
+<button onclick="verificar()">Entrar</button>
+</div>
+</div>
+
+<div class="assinatura">por Dídio Pereira</div>
+
+<script>
+
+const texto = `Existe uma teoria antiga que diz que os verdadeiros amores nunca morrem, eles apenas fingem que não sentem mais nada, talvez seja verdade, né… Bom, pra ser sincero, eu atualizei esse texto muitas vezes ainda depois que paramos de nos falar, sempre volto aos meus mesmos pensamentos de ser pastor e te ver sentada me assistindo pregar,  as vezes te vejo e fico te admirando enquanto desvio o olhar para que você não perceba, e, quando raramente conversamos pessoalmente, não consigo olhar para nenhum lugar além de seus lindos olhos, depois de muito tempo, muitas orações, muitos outros textos que você provavelmente nunca verá, eu tenho a absoluta certeza que você também foi o meu primeiro amor, e, acho que nunca mais terei brecha para te falar isso, mas sim, você foi o meu primeiro amor, pois, eu não te amei apenas com os hormônios de adolescente, não apenas com o corpo, foi com a alma, foi com o espírito. Você é a segunda mulher que eu mais admiro nesse mundo depois da minha mãe, e, acho que esse foi um dos grandes motivos pelo qual  eu realmente decidi me tornar pastor, eu pensava “ como  vou conseguir cuidar da Ju? Como conseguirei ser uma boa pessoa para ela se nós nos casarmos? eu nem a mereço direito…” então, depois de muitas perguntas como essas, decidi olhar para o pastor Aguiar, vi o quão feliz a pastora Helô é com ele, vi seus filhos tendo orgulho do pai, e entendi como eu poderia dar uma vida linda para a mulher que eu mais amei na minha vida, eu entendi como poderia cuidar da segunda garota que eu mais admiro, olhando para o homem que eu mais admiro, e, por fim, percebi que Deus estava agradado dessa decisão, eu tinha certeza, a melhor forma de cuidar de você, seria cuidar de mim primeiro, e ser tão trabalhador como um pastor, agora entendo que preciso melhorar muito antes de te amar, se é que um dia eu vou poder dizer que te amo novamente, agora eu to focando mais em mim, sabe? Mas acho que uma das maiores motivações que tenho, é você. É, eu não fui uma pessoa boa, e, talvez você nunca veja minha mudança, mas, ela existe, e, mesmo que você, Julia, não veja, está tudo bem, pois, se te amar faz com que eu queira me tornar uma pessoa melhor, e faz com que eu não queira olhar para nenhuma outra garota, então, eu amo te amar, mesmo que nós dois nunca mais tenhamos nada. O quão burro que fui de não te declarar que você foi o meu primeiro amor antes? Se eu tivesse te falado, talvez você acreditaria em nós, talvez isso te motivasse a pensar que poderíamos sim ser o primeiro e o último amor um do outro, pois, como poderia ter amado outra pessoa? se antes de te conhecer eu nem crente era? e antes do cristianismo eu nem sabia o que era o verdadeiro amor?
+
+KKKKKKKKKKK, sabe, Ju… Eu não apenas te amei, foi muito mais que isso, eu amo o fato de que no português, diferente de todas as outras línguas, existe a palavra “SAUDADE”, e nesse momento eu agradeço por ser brasieliro, pois aqui existe uma palavra que eu posso dedicar apenas a você. QUE SACOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO. Pq vc ainda duvida que a gente poderia ser feliz? Eu admito, te entender é muito difícil, mas, sabe que eu não ligo? Acho que poucos garotos estariam disposto a ficar tanto tempo aqui. Acho que poucos teriam a coragem de te pedir em namoro para todos os mil membros da sua família, mas, eu tenho certeza que faria isso com muita felicidade, mesmo que eu apanhasse por um martelo kkkkkkkkkkkkkkkkkkkk. Poucos conseguiriam sobreviver a todas as suas fases, mas, pro seu azar, eu aguentei, por você, eu aguentei, e aguentaria outras mil vezes, não por humilhação, não por ser trouxa, não por ser maluco, mas por simplesmente querer que seja você. É, se você existisse em outro planeta, eu passaria a eternidade inteira vagando pelo espaço vazio, te procurando até te encontrar, mesmo se, ao chegar lá eu só pudesse te ver de longe e crer na falsa, boba e infundada esperança de um dia viver algo com você de novo. Talvez, logo, você encontre outro alguém, e, não da pra negar, eu tenho muito medo disso, mas, jamais faria algo para inibir sua alegria, eu quero que você seja muito feliz, seja comigo, ou sem migo. Eu te amo, Juliane dos Santos Trindade, (Lu).
+`;
+
+/* TODOS OS 31 POEMAS */
+const poemas = [
+
+`1.
+Me disse que fez botox no cabelo
+Imagino que não tenha tido receio
+Gostaria eu, se quisera voltar e amar
+Do mesmo jeito, sem esses medos.`,
+
+`2.
+Acho que eu tento de mais
+Até hoje eu não desisti
+Pois me machuca não te ter mais aqui
+Não deveria correr para trás
+Como pude te amar de mais?`,
+
+`3.
+Me olho no espelho e lembro
+De quando meu sorriso existia
+Era muito bom te encarar assim
+Longe da prisão que são as poesias.`,
+
+`4.
+Se eu pudesse voltar no passado
+Não voltaria pro dia que errei 
+Voltaria pro dia que'u ia
+Te olhar e dizer que te amei.`,
+
+`5.
+Eu te gosto como nunca gostei
+Prometi que não diria que amo,
+Mas não tem dito melhor dessa vez.`,
+
+`6.
+Você diz que tenta se entender
+Queria que percebesse também 
+O jeito fácil que contigo é viver
+Assim voltaria pra mim, me amaria de novo e amém.`,
+
+`7.
+Abre os olhos e escreve seu texto 
+dizendo tudo o que sente
+Me manda, me abraça e me diz "novamente te quero presente"`,
+
+`8.
+Sei o que meu amor é intenso 
+Queria te ensinar a me amar
+Sem mais machar meus lenços 
+Te mostrar como ser meu par`,
+
+`9.
+É difícil dizer o que sinto 
+Mais difícil deve ser pra você 
+Achando sempre que eu minto
+Tudo dói, inclusive te ver.`,
+
+`10.
+Me dizem pra mim superar 
+Dizem que deveria esquecer 
+Queria só que eles sentissem no ar
+O amor que tenho por você.`,
+
+`11.
+Minha'lma já não aguenta 
+Eu disse o que deveríamos ser
+Nem eu mesmo consigo saber
+Tudo o que penso em fazer`,
+
+`13.
+Me imagino logo pedindo 
+Novamente, assim, sucinto
+Talvez pra que possamos sair
+Inocente, querendo te ouvir`,
+
+`14.
+Depois disso talvez amizade
+Pra que cresça com muito contrastre
+Se quiser, até um namoro
+Sem medo do julgamento dos outros.`,
+
+`15.
+E se tivesse desfecho?
+Casamento, algo perfeito 
+Contigo o resto da vida
+Pra rir e sofrer com boleto....`,
+
+`16.
+Uma filha chamada mercê?
+Tu iria se arrepender 
+É melhor evitar esse assunto 
+Pra que dê de nos amar com tudo.`,
+
+`17.
+Papai disse a uns tempos atrás 
+Que seria você e nada mais
+Da promessa não vou duvidar 
+Será que é hoje que tu vai voltar?`,
+
+`18.
+Jesus disse isso pra mim
+Por isso vou esperar até o fim
+Não sei se disse outra coisa pra ti
+Isso não faria sentido daí.`,
+
+`19.
+Se tudo que nasce morrer
+Então tudo que morrer vai nascer
+Nosso amor, será que morreu?
+Um dia volta com vida e sem breu.`,
+
+`20.
+É cedo pra querer assim
+Concordamos com isso e enfim.
+Queria te pedir pra esperar
+Pois não consigo mais nos aguentar.`,
+
+`21.
+Éramos muito melhor em casal,
+Combinávamos tanto, bem crucial.
+Eu não quero que tenha morrido
+Por favor, recomeça esse ciclo?`,
+
+`22.
+Que esse ciclo não pare de novo
+Nesse mar frio, doloroso e bobo
+Que a gente consiga focar 
+Caso aconteça de nos desviar.`,
+
+`23.
+E não importa a dificuldade,
+Que nós não sejamos covardes
+Pois sei que podemos tentar
+Concertar o que um dia foi lar.`,
+
+`24.
+Lembrei de quando fomos no rio
+Te abracei, foi longo e sem frio
+Eu senti o que nunca senti
+Não era pra rer saído dali.`,
+
+`25.
+Se eu ficasse mais no abraço 
+Não daria pra dar nenhum passo
+Cairia era duro no chão 
+Imagina a aliança na mão?`,
+
+`26.
+De todos os textos que já te enviaram 
+Declarações que outros homens falaram
+Duvido que saudades deixaram
+Será que posso ser o primeiro?
+E escrever todo o nosso roteiro?`,
+
+`27.
+O amor do nosso Deus é gigante
+Vamos focar nesse amor que é constante
+E depois, num futuro distante
+Podemos viver algo semelhante.`,
+
+`28.
+Era bom se você aceitasse
+Nada agora, apenas mais tarde
+Esperar e ter fé em nós dois
+Mas sem se passar, deixar pra depois.`,
+
+`29.
+Fiz esses poemas e sei que vai ler
+Não sei se por amor ou por que quer saber
+Você sente o mesmo por mim, apenas evita
+Abandona isso sai dessa fadiga.`,
+
+`30.
+Talvez haveriam brigas
+Discussões, às vezes intrigas...
+Eu não acredito em fadas
+Mas podemos vencer de mãos dadas.`,
+
+`31.
+Você costuma dizer que não merece meu amor
+Eu costumo dizer que não mereço que você ainda está aqui.
+Talvez nós dois nos merecemos.`
+];
+
+function abrirPoemas(){
+  const div = document.getElementById("poemas");
+  div.innerHTML = "";
+  poemas.forEach(p=>{
+    const el = document.createElement("div");
+    el.className = "poema";
+    el.innerText = p;
+    div.appendChild(el);
+  });
+  div.style.display = "block";
+}
+
+function abrirSenha(){
+  document.getElementById("senhaBox").style.display = "flex";
+}
+
+function verificar(){
+  const senha = document.getElementById("senhaInput").value;
+  if(senha === "OVELHA"){
+    document.getElementById("senhaBox").style.display = "none";
+    document.getElementById("textoBox").style.display = "block";
+    document.getElementById("texto").innerText = texto;
+  } else {
+    alert("senha errada 😔");
+  }
+}
+
+/* partículas */
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let p = [];
+for(let i=0;i<30;i++){
+  p.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*3});
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="rgba(255,105,180,0.4)";
+  p.forEach(a=>{
+    ctx.beginPath();
+    ctx.arc(a.x,a.y,a.r,0,Math.PI*2);
+    ctx.fill();
+    a.y-=0.3;
+    if(a.y<0)a.y=canvas.height;
+  });
+  requestAnimationFrame(draw);
+}
+draw();
+
+</script>
+
+</body>
+</html>
